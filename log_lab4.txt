@@ -1,0 +1,70 @@
+Please press Enter to activate this console. 
+/ # insmod /lib/modules/4.19.325/extra/hello.ko
+[   16.366410] hello: loading out-of-tree module taints kernel.
+[   16.383391] Hello, world!
+/ # cat /sys/module/hello/parameters/hello_count
+1
+/ # rmmod hello
+[   30.219755] hello: event time = 16307846752 ns
+/ # insmod /lib/modules/4.19.325/extra/hello.ko hello_count=0
+[   40.889757] hello: suspicious hello_count = 0
+/ # dmesg | tail
+[    1.937474] Loading compiled-in X.509 certificates
+[    1.943897] input: gpio-keys as /devices/platform/gpio-keys/input/input0
+[    1.947155] rtc-pl031 9010000.pl031: setting system clock to 2025-12-06 23:10:48 UTC (1765062648)
+[    1.951819] uart-pl011 9000000.pl011: no DMA platform data
+[    2.052627] Freeing unused kernel memory: 2048K
+[    2.056813] Run /init as init process
+[   16.366410] hello: loading out-of-tree module taints kernel.
+[   16.383391] Hello, world!
+[   30.219755] hello: event time = 16307846752 ns
+[   40.889757] hello: suspicious hello_count = 0
+/ # rmmod hello
+/ # insmod /lib/modules/4.19.325/extra/hello.ko hello_count=6
+[   77.564995] hello: suspicious hello_count = 6
+[   77.565565] Hello, world!
+[   77.566509] Hello, world!
+[   77.566637] Hello, world!
+[   77.566702] Hello, world!
+[   77.566755] Hello, world!
+[   77.566807] Hello, world!
+/ # dmesg | tail
+[   16.383391] Hello, world!
+[   30.219755] hello: event time = 16307846752 ns
+[   40.889757] hello: suspicious hello_count = 0
+[   77.564995] hello: suspicious hello_count = 6
+[   77.565565] Hello, world!
+[   77.566509] Hello, world!
+[   77.566637] Hello, world!
+[   77.566702] Hello, world!
+[   77.566755] Hello, world!
+[   77.566807] Hello, world!
+/ # rmmod hello
+[   90.859115] hello: event time = 77490025872 ns
+[   90.859543] hello: event time = 77490772688 ns
+[   90.859933] hello: event time = 77491109840 ns
+[   90.860172] hello: event time = 77491176720 ns
+[   90.860455] hello: event time = 77491229328 ns
+[   90.861293] hello: event time = 77491281648 ns
+/ # insmod /lib/modules/4.19.325/extra/hello.ko hello_count=13
+[  101.675784] hello: invalid hello_count = 13
+insmod: can't insert '/lib/modules/4.19.325/extra/hello.ko': invalid parameter
+/ # insmod /lib/modules/4.19.325/extra/hello.ko hello_count=11
+[  105.793395] hello: invalid hello_count = 11
+insmod: can't insert '/lib/modules/4.19.325/extra/hello.ko': invalid parameter
+/ # dmesg | tail
+[   77.566755] Hello, world!
+[   77.566807] Hello, world!
+[   90.859115] hello: event time = 77490025872 ns
+[   90.859543] hello: event time = 77490772688 ns
+[   90.859933] hello: event time = 77491109840 ns
+[   90.860172] hello: event time = 77491176720 ns
+[   90.860455] hello: event time = 77491229328 ns
+[   90.861293] hello: event time = 77491281648 ns
+[  101.675784] hello: invalid hello_count = 13
+[  105.793395] hello: invalid hello_count = 11
+/ # lsmod      # ???? lsmod ? ? BusyBox
+/ # cat /sys/module/hello/parameters/hello_count
+cat: can't open '/sys/module/hello/parameters/hello_count': No such file or directory
+/ # 
+
